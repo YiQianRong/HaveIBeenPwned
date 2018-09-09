@@ -1,0 +1,63 @@
+﻿@model PwnedPasswordsModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (Model == null)
+{
+    <span>no items found</span>
+}
+else
+{
+    @using (Html.BeginForm("CheckPwnedPassword", "Home", new PwnedPasswordsModel { Password = Model.Password, Message = Model.Message, Frequency = Model.Frequency, Name = Model.Name, IsPwned = Model.IsPwned }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-10">
+                    <br />
+                    <label class="control-label col-md-2">User Name: </label>
+                </div>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                </div>
+                <div class="col-md-10">
+                    <br />
+                    <label class="control-label col-md-2">Password: </label>
+                </div>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
+                    <br />
+                    <button type="submit">Check Pwned Password</button>
+                </div>
+                <br />
+            </div>
+        </div>
+    }
+
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Password</th>
+                <th>Is Pwned</th>
+                <th>Message</th>
+                <th>Frequency</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Name</td>
+                <td>@Model.Password</td>
+                <td>@Model.IsPwned</td>
+                <td>@Model.Message</td>
+                <td>@Model.Frequency</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+ 
