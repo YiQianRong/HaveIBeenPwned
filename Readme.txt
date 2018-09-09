@@ -5,5 +5,5 @@ To Build and Run
 3) Clean Solution
 4) Rebuild Solution
 5) Set as Startup Project to HaveIBeenPwned.UI
-6) Start Without Debbugging 
+6) Start Without Debugging 
 
