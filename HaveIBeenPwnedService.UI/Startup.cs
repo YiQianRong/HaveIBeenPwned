@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
+using System.Net.Http;
 
 namespace PwnedPassword
 {
@@ -21,6 +20,12 @@ namespace PwnedPassword
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Explicitly configure the PwnedPassword client to timeout after 2 seconds, and retry 3 times
+            // The pwnedpassword API achieves 99% percentile of <1s, so this should be sufficient!
+            services.AddPwnedPasswordHttpClient()
+                  .AddTransientHttpErrorPolicy(p => p.RetryAsync(3))
+                  .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(2)));
+
             services.AddMvc();
         }
 
