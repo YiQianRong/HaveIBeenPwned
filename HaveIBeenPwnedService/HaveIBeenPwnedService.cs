@@ -44,8 +44,6 @@ namespace HaveIBeenPwned.Service
                     var result = await Contains(response.Content, sha1Suffix);
                     if (result.isPwned)
                     {
-                        int count = result.frequency;
-                        password += count.ToString();
                         _logger.LogDebug("HaveIBeenPwned API indicates the password has been pwned");
                     }
                     else
